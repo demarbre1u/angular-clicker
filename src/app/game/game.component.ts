@@ -22,7 +22,7 @@ export class GameComponent implements OnInit {
   playerDamage: number = 2
   playerAutoDamage: number = 0
   gold: number = 0
-
+  
   weapons = []
   
   constructor(private sanitizer: DomSanitizer, private httpService: HttpClientService, private localStorage: LocalStorageServiceService, private router: Router) {}
@@ -46,14 +46,18 @@ export class GameComponent implements OnInit {
   }
 
   addMonsterDiedLog($event) {
-    this.data = `<span>The ${$event.monsterName} died.</span><br/>` + this.data
+    let monsterHTML = `<span style="color: #95a5a6">${$event.monsterName}</span>`
+
+    this.data = `<span>The ${monsterHTML} died.</span><br/>` + this.data
     this.html = this.sanitizer.bypassSecurityTrustHtml(this.data)
   }
 
   addGoldLog($event) {
     this.gold += $event.gold
 
-    this.data = `<span>You got ${$event.gold} golds.</span><br/>` + this.data
+    let goldIcon = '<img src="assets/img/icon/coins.svg" alt="golds" style="width: 16px; height: 16px">'
+
+    this.data = `<span>You got ${$event.gold} ${goldIcon}.</span><br/>` + this.data
     this.html = this.sanitizer.bypassSecurityTrustHtml(this.data)
   }
 

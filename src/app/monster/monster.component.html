@@ -4,3 +4,7 @@
 </div>
 
 <img (click)="clickedMonster()" class="monster" src="{{ currentMonster.src }}" alt="Monster">
+
+<div id="zone-progress">
+  <div [style.width.%]="zoneProgressPercent" ></div>
+</div>

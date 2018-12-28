@@ -19,6 +19,9 @@ export class MonsterComponent implements OnInit {
   currentMonster: any = {}
   currentZone: any = {}
 
+  zoneProgress: number = 0
+  zoneProgressPercent: number = 0
+
   hp: number
   hpPercent: number
 
@@ -35,6 +38,9 @@ export class MonsterComponent implements OnInit {
       })
 
       this.zoneChange.emit({bg: this.currentZone.bg})
+
+      this.zoneProgress = 0
+      this.zoneProgressPercent = this.zoneProgress / this.currentZone.limiter * 100
     })
   }
 
@@ -74,7 +80,10 @@ export class MonsterComponent implements OnInit {
   changeMonster() {
     let totalDamages = this.playerAutoDamage + this.playerDamage
 
-    if(totalDamages >= this.currentZone.limiter && this.currentZone.id < this.zoneList.length)
+    this.zoneProgress++
+    this.zoneProgressPercent = this.zoneProgress / this.currentZone.limiter * 100
+
+    if(this.zoneProgressPercent >= 100 && this.currentZone.id < this.zoneList.length)
     {
       this.currentZone = this.zoneList[ this.currentZone.id ]
       
@@ -85,12 +94,14 @@ export class MonsterComponent implements OnInit {
       })
 
       this.zoneChange.emit({bg: this.currentZone.bg})
+      this.zoneProgress = 0
     }
     else
     {
       this.currentMonster = this.monsterList[ this.currentMonster.id % this.monsterList.length ]
     }
 
+    this.zoneProgressPercent = this.zoneProgress / this.currentZone.limiter * 100
 
     this.hpPercent = 100
     this.hp = this.currentMonster.hpMax

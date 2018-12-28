@@ -6,7 +6,7 @@ const httpOptions = {
 };
 
 const config = {
-  baseUrl: 'http://localhost:8080'
+  baseUrl: 'http://192.168.0.35:8080'
 }
 
 @Injectable({
