@@ -33,7 +33,10 @@ export class MonsterComponent implements OnInit {
       this.httpService.getMonstersByZone(this.zoneList[0].id).subscribe(data => {
         this.monsterList = data['data']
   
-        this.currentMonster = this.monsterList[0]
+        let random = Math.round((Math.random() * (this.monsterList.length - 1)))
+
+        this.currentMonster = this.monsterList[random]
+
         this.hp = this.currentMonster.hpMax
       })
 
@@ -90,7 +93,12 @@ export class MonsterComponent implements OnInit {
       this.httpService.getMonstersByZone(this.currentZone.id).subscribe(data => {
         this.monsterList = data['data']
   
-        this.currentMonster = this.monsterList[0]
+        let random = Math.round((Math.random() * (this.monsterList.length - 1)))
+
+        this.currentMonster = this.monsterList[random]
+
+        this.hpPercent = 100
+        this.hp = this.currentMonster.hpMax
       })
 
       this.zoneChange.emit({bg: this.currentZone.bg})
@@ -98,12 +106,14 @@ export class MonsterComponent implements OnInit {
     }
     else
     {
-      this.currentMonster = this.monsterList[ this.currentMonster.id % this.monsterList.length ]
+      let random = Math.round((Math.random() * (this.monsterList.length - 1)))
+
+      this.currentMonster = this.monsterList[random]
+
+      this.hpPercent = 100
+      this.hp = this.currentMonster.hpMax
     }
 
     this.zoneProgressPercent = this.zoneProgress / this.currentZone.limiter * 100
-
-    this.hpPercent = 100
-    this.hp = this.currentMonster.hpMax
   }
 }
