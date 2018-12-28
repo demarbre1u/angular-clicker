@@ -6,5 +6,14 @@
 <img (click)="clickedMonster()" class="monster" src="{{ currentMonster.src }}" alt="Monster">
 
 <div id="zone-progress">
-  <div [style.width.%]="zoneProgressPercent" ></div>
+
+    <img class="icon"  src="assets/img/icon/skull.svg" alt="">
+    <span>{{ zoneProgress }}</span>
+
+    <div id="zone-progress-bar">
+        <div [style.width.%]="zoneProgressPercent" ></div>
+    </div>
+
+    <span>{{ currentZone.limiter }}</span>
+    <img class="icon"  src="assets/img/icon/skull.svg" alt="">
 </div>
