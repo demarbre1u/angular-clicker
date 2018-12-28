@@ -6,11 +6,11 @@ import { LocalStorageServiceService } from '../service/local-storage-service.ser
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-test',
-  templateUrl: './test.component.html',
-  styleUrls: ['./test.component.css'], 
+  selector: 'app-game',
+  templateUrl: './game.component.html',
+  styleUrls: ['./game.component.css'], 
 })
-export class TestComponent implements OnInit {
+export class GameComponent implements OnInit {
   @ViewChild('monster')
   private monster: MonsterComponent;
   

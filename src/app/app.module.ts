@@ -5,7 +5,7 @@ import { HttpClientModule } from "@angular/common/http";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { TestComponent } from './test/test.component';
+import { GameComponent } from './game/game.component';
 import { MonsterComponent } from './monster/monster.component';
 import { WeaponSlotComponent } from './weapon-slot/weapon-slot.component';
 import { LoginComponent } from './login/login.component';
@@ -13,7 +13,7 @@ import { LoginComponent } from './login/login.component';
 @NgModule({
   declarations: [
     AppComponent,
-    TestComponent,
+    GameComponent,
     MonsterComponent,
     WeaponSlotComponent,
     LoginComponent
