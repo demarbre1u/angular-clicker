@@ -1,0 +1,47 @@
+<div id="status-bar">
+  
+    <div id="buttons">
+        <a href="#">Save</a>
+        <a (click)="logOut()" href="">Logout</a>
+    </div>
+  
+    <span id="playerName">{{ username }}</span> 
+  
+</div>  
+
+<div id="container">
+
+  <div id="weapon-list">
+      <app-weapon-slot (weaponBought)="weaponBought($event)" *ngFor="let w of weapons" [weapon]="w" [gold]="gold" [playerDamage]="playerDamage" [playerAutoDamage]="playerAutoDamage"></app-weapon-slot>
+  </div>
+
+  <div id="game-screen">
+    
+    <div id="screen" [ngStyle]="{'background-image':currentBg}">
+      
+      <div id="stats">
+        <span class="icon">
+          <img src="assets/img/icon/coins.svg" alt="icon">
+          <span>{{ gold }}</span>
+        </span> 
+
+        <span class="icon">
+          <img src="assets/img/icon/sword.svg" alt="icon">
+          <span>{{ playerDamage }}</span>
+        </span> 
+        
+        <span class="icon">
+          <img src="assets/img/icon/magic.svg" alt="icon">
+          <span>{{ playerAutoDamage }}</span>
+        </span>   
+      </div>
+
+      <app-monster id="monster" #monster [playerDamage]="playerDamage" [playerAutoDamage]="playerAutoDamage" (zoneChange)="changeZoneBackground($event)" (monsterDied)="monsterDied($event)"></app-monster>
+
+    </div>
+
+    <div [innerHTML]="html" id="logs"></div>
+
+  </div>
+
+</div>

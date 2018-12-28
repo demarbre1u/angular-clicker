@@ -1,0 +1,26 @@
+<div class="weapon">
+  
+  <div class="weapon-header">
+      <img class="weapon-img" src="{{ weapon.src }}" alt="">
+      <div class="infos">
+        <span>{{ weapon.name }}</span>
+
+        <span class="detail icon">
+          <img src="assets/img/icon/sword.svg" alt="">
+          {{ weapon.dmg }}
+        </span>
+        
+        <span class="detail icon">        
+          <img src="assets/img/icon/magic.svg" alt="">
+          {{ weapon.auto }}
+        </span>
+        
+        <span class="detail icon">        
+          <img src="assets/img/icon/coins.svg" alt="">
+          {{ weapon.price }}
+        </span>
+      </div>
+  </div>
+
+  <button *ngIf="!isBought" (click)="buyWeapon($event)">Buy</button>
+</div>

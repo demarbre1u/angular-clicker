@@ -1,0 +1,6 @@
+<span class="monster-name">{{ currentMonster.name ? currentMonster.name : '...' }}</span> 
+<div id="health-bar">
+  <div [style.width.%]="hpPercent"></div>
+</div>
+
+<img (click)="clickedMonster()" class="monster" src="{{ currentMonster.src }}" alt="Monster">
