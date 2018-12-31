@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpClientService } from '../service/http-client.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { MonsterComponent } from '../monster/monster.component';
@@ -18,6 +18,7 @@ export class GameComponent implements OnInit {
   dataDamage: string = ""
   htmlGeneral:SafeHtml
   htmlDamage:SafeHtml
+  isDataLoaded: boolean = false
   
   username: String
   currentBg: String
@@ -26,14 +27,14 @@ export class GameComponent implements OnInit {
   gold: number = 0
   
   limiter: number = 0
+  id_zone: number = 1
   zoneProgress: number = 0
   zoneProgressPercent: number = 0 
 
   weapons = []
+  magics = []
   
-  constructor(private sanitizer: DomSanitizer, private httpService: HttpClientService, private localStorage: LocalStorageServiceService, private router: Router) {}
-
-  ngOnInit() {
+  constructor(private sanitizer: DomSanitizer, private httpService: HttpClientService, private localStorage: LocalStorageServiceService, private router: Router) {
     this.httpService.playerHasSave().subscribe(data => {
       let saveData = data['data']
       
@@ -43,8 +44,12 @@ export class GameComponent implements OnInit {
         this.loadGame()
       else
         this.loadSave()
+      
+      this.isDataLoaded = true
     })
+  }
 
+  ngOnInit() {
     setInterval( () => {
       if(this.playerAutoDamage !== undefined && this.playerAutoDamage > 0)
         this.monster.autoDamage()
@@ -52,9 +57,7 @@ export class GameComponent implements OnInit {
   }
 
   loadGame() {
-    this.httpService.getWeapons().subscribe(data => {
-      this.weapons = data['data'].sort( (a, b) => a.price - b.price )
-    })
+    this.loadWeapons()    
   
     this.httpService.getZoneById(1).subscribe(data => {
         let zone = data['data']
@@ -73,17 +76,26 @@ export class GameComponent implements OnInit {
 
       let weapons = saveData.weapons.split(';')
       this.localStorage.setOwnedWeapons(weapons)
-      this.httpService.getWeapons().subscribe(data => {
-        this.weapons = data['data'].sort( (a, b) => a.price - b.price )
-      })
+      this.loadWeapons()
   
       this.zoneProgress = saveData.progress
-      this.httpService.getZoneById( saveData.id_zone ).subscribe(data => {
+      this.id_zone = saveData.id_zone
+      this.localStorage.setCurrentZone(this.id_zone)
+      this.httpService.getZoneById( this.id_zone ).subscribe(data => {
         let zone = data['data']
   
         this.limiter = zone.limiter
         this.zoneProgressPercent = this.zoneProgress / this.limiter * 100
       })
+    })
+  }
+
+  loadWeapons() {
+    this.httpService.getWeaponsByType(0).subscribe(data => {
+      this.weapons = data['data'].sort( (a, b) => a.price - b.price )
+    })
+    this.httpService.getWeaponsByType(1).subscribe(data => {
+      this.magics = data['data'].sort( (a, b) => a.price - b.price )
     })
   }
 

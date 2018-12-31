@@ -57,9 +57,13 @@ export class LocalStorageServiceService {
     localStorage.setItem('zone', JSON.stringify(id))
   }
 
+  destroyCurrentZone() {
+    localStorage.removeItem('zone')
+  }
+
   logOut() {
     this.setCurrentUser('')
-    this.setCurrentZone(1)
+    this.destroyCurrentZone()
     this.destroyOwnedWeapons()
   }
 }

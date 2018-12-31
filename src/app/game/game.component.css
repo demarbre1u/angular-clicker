@@ -37,18 +37,6 @@
     text-decoration: none;
 }
 
-#weapon-list {
-    width: 30vw;
-    height: 90vh;
-    background-color: #34495e;
-    color: #ecf0f1;
-    overflow-y: scroll; 
-}
-
-#weapon-list::-webkit-scrollbar { 
-    display: none; 
-}
-
 #game-screen {
     width: 70vw;
     display: flex;
@@ -161,4 +149,16 @@
 
 #general-logs::-webkit-scrollbar, #damage-logs::-webkit-scrollbar { 
     display: none; 
+}
+
+#weapon-list {
+    width: 30vw;
+    height: 90vh;
+    background-color: #34495e;
+    color: #ecf0f1;
+    overflow-y: auto; 
+}
+
+.tab-label {
+    color: #ecf0f1;
 }

@@ -20,6 +20,10 @@ export class HttpClientService {
     return this.http.get(config.baseUrl + '/weapons')
   }
 
+  getWeaponsByType(type) {
+    return this.http.get(config.baseUrl + `/weapons/type/${type}`)
+  }
+
   getMonsters() {
     return this.http.get(config.baseUrl + '/monsters')
   }

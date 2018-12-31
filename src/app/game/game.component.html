@@ -11,13 +11,49 @@
 
 <div id="container">
 
-  <div id="weapon-list">
-      <app-weapon-slot (weaponBought)="weaponBought($event)" *ngFor="let w of weapons" [weapon]="w" [gold]="gold" [playerDamage]="playerDamage" [playerAutoDamage]="playerAutoDamage"></app-weapon-slot>
-  </div>
+  <mat-tab-group animationDuration="0ms" mat-align-tabs="center" id="weapon-list">
+    <mat-tab class="tab">
+      <ng-template mat-tab-label>
+        <span class="tab-label">Weapon</span>
+      </ng-template>
+      
+      <div id="weapon-list">
+        <app-weapon-slot 
+          (weaponBought)="weaponBought($event)" 
+          *ngFor="let w of weapons" 
+          [weapon]="w" 
+          [gold]="gold" 
+          [playerDamage]="playerDamage" 
+          [playerAutoDamage]="playerAutoDamage">
+        </app-weapon-slot>
+      </div>
+
+    </mat-tab>
+  
+    <mat-tab class="tab">
+      <ng-template class="tab-label" mat-tab-label>
+        <span class="tab-label">Magic</span>
+      </ng-template>
+      
+      <div id="weapon-list">
+        <app-weapon-slot 
+          (weaponBought)="weaponBought($event)" 
+          *ngFor="let m of magics" 
+          [weapon]="m" 
+          [gold]="gold" 
+          [playerDamage]="playerDamage" 
+          [playerAutoDamage]="playerAutoDamage">
+        </app-weapon-slot>
+      </div>
+      
+    </mat-tab>
+  </mat-tab-group>
+
+ 
 
   <div id="game-screen">
     
-    <div id="screen" [ngStyle]="{'background-image':currentBg}">
+    <div *ngIf="isDataLoaded" id="screen" [ngStyle]="{'background-image':currentBg}">
       
       <div id="stats">
         <span class="icon">
