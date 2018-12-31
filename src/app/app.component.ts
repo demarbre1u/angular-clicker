@@ -8,10 +8,4 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
   title = 'AngularClicker';
-  username: String
-
-  setUsername(name) {
-    console.log(name)
-    this.username = name
-  }
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { HttpClientService } from '../service/http-client.service';
+import { LocalStorageServiceService } from '../service/local-storage-service.service';
 
 @Component({
   selector: 'app-monster',
@@ -14,6 +15,7 @@ export class MonsterComponent implements OnInit {
   
   @Input() playerDamage: number 
   @Input() playerAutoDamage: number 
+  @Input() zoneProgress: number
 
   zoneList = []
   monsterList = []
@@ -21,18 +23,20 @@ export class MonsterComponent implements OnInit {
   currentMonster: any = {}
   currentZone: any = {}
 
-  zoneProgress: number = 0
   zoneProgressPercent: number = 0
 
   hp: number
   hpPercent: number
 
-  constructor(private httpService: HttpClientService) { 
+  constructor(private httpService: HttpClientService, private localStorage: LocalStorageServiceService) { 
     this.httpService.getZones().subscribe(data => {
       this.zoneList = data['data']
-      this.currentZone = this.zoneList[0]
+      
+      let zoneIndex = this.localStorage.getCurrentZone() - 1
+      this.currentZone = this.zoneList[zoneIndex]
+      //this.currentZone = this.zoneList[0]
 
-      this.httpService.getMonstersByZone(this.zoneList[0].id).subscribe(data => {
+      this.httpService.getMonstersByZone(this.zoneList[zoneIndex].id).subscribe(data => {
         this.monsterList = data['data']
   
         let random = Math.round((Math.random() * (this.monsterList.length - 1)))
@@ -98,6 +102,7 @@ export class MonsterComponent implements OnInit {
     if(this.zoneProgressPercent >= 100 && this.currentZone.id < this.zoneList.length)
     {
       this.currentZone = this.zoneList[ this.currentZone.id ]
+      this.localStorage.setCurrentZone(this.currentZone.id)
       
       this.httpService.getMonstersByZone(this.currentZone.id).subscribe(data => {
         this.monsterList = data['data']

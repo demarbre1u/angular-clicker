@@ -26,7 +26,11 @@
     align-items: center;
 }
 
-#buttons a {
+#buttons button {
+    border: none;
+    background-color: transparent;
+    outline: none;
+    cursor: pointer;
     margin-left: 30px;
     font-size: 30px;
     color: #ecf0f1;

@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     let currentUser = this.localStorage.getCurrentUser()
 
-    if(currentUser !== '')
+    if(Object.keys(currentUser).length !== 0)
       this.router.navigate(['/game'])
   }
 
@@ -28,13 +28,23 @@ export class LoginComponent implements OnInit {
 
     // On regarde si le nom existe deja en base de données
     this.httpService.getUserByName(name).subscribe(data => {
+      
+      this.setUser(data)
+
     }, error => {
-      this.httpService.createUser(name).subscribe()
+      this.httpService.createUser(name).subscribe(data => {
+
+        this.setUser(data)
+
+      })
     })
+  }
+
+  setUser(data) {
+    let userId = data['data'].ID
 
     // On envoie un event avec le nom du user pour l'afficher dans le header
-    this.localStorage.setCurrentUser(name)
-
+    this.localStorage.setCurrentUser({id: userId, name: data['data'].Name})
     this.router.navigate(['/game']);
   }
 }

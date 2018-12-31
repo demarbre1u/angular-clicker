@@ -34,22 +34,57 @@ export class GameComponent implements OnInit {
   constructor(private sanitizer: DomSanitizer, private httpService: HttpClientService, private localStorage: LocalStorageServiceService, private router: Router) {}
 
   ngOnInit() {
-    this.username = this.localStorage.getCurrentUser()
+    this.httpService.playerHasSave().subscribe(data => {
+      let saveData = data['data']
+      
+      this.username = this.localStorage.getCurrentUser().username
 
-    this.httpService.getWeapons().subscribe(data => {
-      this.weapons = data['data'].sort( (a, b) => a.price - b.price )
-    })
-
-    this.httpService.getZoneById(1).subscribe(data => {
-      let zone = data['data']
-
-      this.limiter = zone.limiter
+      if(Object.keys(saveData).length === 0)
+        this.loadGame()
+      else
+        this.loadSave()
     })
 
     setInterval( () => {
       if(this.playerAutoDamage !== undefined && this.playerAutoDamage > 0)
         this.monster.autoDamage()
     }, 1000)
+  }
+
+  loadGame() {
+    this.httpService.getWeapons().subscribe(data => {
+      this.weapons = data['data'].sort( (a, b) => a.price - b.price )
+    })
+  
+    this.httpService.getZoneById(1).subscribe(data => {
+        let zone = data['data']
+  
+        this.limiter = zone.limiter
+      })
+  }
+
+  loadSave() {
+    this.httpService.loadSave().subscribe(data => {
+      let saveData = data['data']
+
+      this.gold = saveData.gold
+      this.playerDamage = saveData.dmg
+      this.playerAutoDamage = saveData.auto
+
+      let weapons = saveData.weapons.split(';')
+      this.localStorage.setOwnedWeapons(weapons)
+      this.httpService.getWeapons().subscribe(data => {
+        this.weapons = data['data'].sort( (a, b) => a.price - b.price )
+      })
+  
+      this.zoneProgress = saveData.progress
+      this.httpService.getZoneById( saveData.id_zone ).subscribe(data => {
+        let zone = data['data']
+  
+        this.limiter = zone.limiter
+        this.zoneProgressPercent = this.zoneProgress / this.limiter * 100
+      })
+    })
   }
 
   monsterDied($event) {
@@ -70,6 +105,11 @@ export class GameComponent implements OnInit {
     let goldIcon = '<img src="assets/img/icon/coins.svg" alt="golds" style="width: 16px; height: 16px">'
 
     this.dataGeneral = `<span>You got ${$event.gold} ${goldIcon}.</span><br/>` + this.dataGeneral
+    this.htmlGeneral = this.sanitizer.bypassSecurityTrustHtml(this.dataGeneral)
+  }
+
+  addSavedLog() {
+    this.dataGeneral = `<span style="color: #16a085">Your progression has been saved!</span><br/>` + this.dataGeneral
     this.htmlGeneral = this.sanitizer.bypassSecurityTrustHtml(this.dataGeneral)
   }
 
@@ -120,5 +160,20 @@ export class GameComponent implements OnInit {
     this.zoneProgress = data.zoneProgress
     this.zoneProgressPercent = data.zoneProgressPercent
     this.limiter = data.limiter
+  }
+
+  saveGame() {
+    let saveData = {
+      gold: `${this.gold}`,
+      dmg: `${this.playerDamage}`,
+      auto: `${this.playerAutoDamage}`,
+      progress: `${this.zoneProgress}`,
+      weapons: `${this.localStorage.getOwnedWeapons().join(';')}`,
+      id_zone: `${this.localStorage.getCurrentZone()}`
+    }
+
+    this.httpService.saveGame(saveData)
+
+    this.addSavedLog()
   }
 }

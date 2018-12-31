@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { LocalStorageServiceService } from '../service/local-storage-service.service';
 
 @Component({
   selector: 'app-weapon-slot',
@@ -15,9 +16,14 @@ export class WeaponSlotComponent implements OnInit {
 
   isBought: boolean = false
 
-  constructor() {}
+  constructor(private localStorage: LocalStorageServiceService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    let ownedWeapons = this.localStorage.getOwnedWeapons()
+
+    if(ownedWeapons.includes(`${this.weapon.id}`))
+      this.isBought = true
+  }
 
   buyWeapon($event: any) {
     if(this.gold >= this.weapon.price)
@@ -29,6 +35,8 @@ export class WeaponSlotComponent implements OnInit {
       this.weaponBought.emit({gold: this.gold, damage: this.playerDamage, auto: this.playerAutoDamage})
 
       this.isBought = true
+
+      this.localStorage.addOwnedWeapons(this.weapon.id)
     }
   }
 }

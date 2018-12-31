@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { LocalStorageServiceService } from './local-storage-service.service';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -13,8 +14,7 @@ const config = {
   providedIn: 'root'
 })
 export class HttpClientService {
-
-  constructor(private http:HttpClient) {}
+  constructor(private http:HttpClient, private localStorage: LocalStorageServiceService) {}
  
   getWeapons() {
     return this.http.get(config.baseUrl + '/weapons')
@@ -42,5 +42,46 @@ export class HttpClientService {
 
   getUserByName(name: string) {
     return this.http.get(config.baseUrl + '/users/' + name)
+  }
+
+  playerHasSave() {
+    let userId = this.localStorage.getCurrentUser().id
+
+    return this.http.get(config.baseUrl + `/users/${userId}/save`)
+  }
+
+  saveGame(saveData) {
+    // On regarde s'il existe déjà une save
+    let currentId = this.localStorage.getCurrentUser().id
+
+    this.http.get(config.baseUrl + `/users/${currentId}/save`).subscribe(data => {
+      let save = data['data']
+      
+      // Si elle existe, on la met à jour, sinon, on la crée
+      if(Object.keys(save).length !== 0)
+        this.updateSave(saveData, save)
+      else
+        this.createSave(saveData)
+    })
+  }
+
+  updateSave(saveData, save) {
+    let saveId = save.id
+
+    this.http.put(config.baseUrl + `/saves/${saveId}`, saveData).subscribe()
+  }
+
+  createSave(saveData) {
+    this.http.post(config.baseUrl + '/saves', saveData).subscribe(data => {
+
+      return this.http.put(config.baseUrl + `/users/${this.localStorage.getCurrentUser().id}`, {id_save: `${data['data'].id}`}).subscribe()
+    
+    })
+  }
+
+  loadSave() {
+    let userId = this.localStorage.getCurrentUser().id
+
+    return this.http.get(config.baseUrl + `/users/${userId}/save`)
   }
 }
