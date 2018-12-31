@@ -36,7 +36,14 @@
         </span>   
       </div>
 
-      <app-monster id="monster" #monster [playerDamage]="playerDamage" [playerAutoDamage]="playerAutoDamage" (zoneProgressUpdate)="updateZoneProgress($event)" (zoneChange)="changeZoneBackground($event)" (monsterDied)="monsterDied($event)"></app-monster>
+      <app-monster id="monster" #monster 
+        [playerDamage]="playerDamage" 
+        [playerAutoDamage]="playerAutoDamage" 
+        (zoneProgressUpdate)="updateZoneProgress($event)" 
+        (zoneChange)="changeZoneBackground($event)" 
+        (monsterDied)="monsterDied($event)"
+        (monsterDamage)="addMonsterDamage($event)">
+      </app-monster>
 
       <div id="zone-progress">
 
@@ -52,9 +59,9 @@
       </div>
     </div>
 
-    <div [innerHTML]="html" id="logs">
-      <div id="general-logs"></div>
-      <div id="damage-logs"></div>
+    <div id="logs">
+      <div [innerHTML]="htmlGeneral" id="general-logs"></div>
+      <div [innerHTML]="htmlDamage" id="damage-logs"></div>
     </div>
 
   </div>

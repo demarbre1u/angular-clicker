@@ -14,8 +14,10 @@ export class GameComponent implements OnInit {
   @ViewChild('monster')
   private monster: MonsterComponent;
   
-  data: string = ""
-  html:SafeHtml
+  dataGeneral: string = ""
+  dataDamage: string = ""
+  htmlGeneral:SafeHtml
+  htmlDamage:SafeHtml
   
   username: String
   currentBg: String
@@ -58,8 +60,8 @@ export class GameComponent implements OnInit {
   addMonsterDiedLog($event) {
     let monsterHTML = `<span style="color: #95a5a6">${$event.monsterName}</span>`
 
-    this.data = `<span>The ${monsterHTML} died.</span><br/>` + this.data
-    this.html = this.sanitizer.bypassSecurityTrustHtml(this.data)
+    this.dataGeneral = `<span>The ${monsterHTML} died.</span><br/>` + this.dataGeneral
+    this.htmlGeneral = this.sanitizer.bypassSecurityTrustHtml(this.dataGeneral)
   }
 
   addGoldLog($event) {
@@ -67,8 +69,35 @@ export class GameComponent implements OnInit {
 
     let goldIcon = '<img src="assets/img/icon/coins.svg" alt="golds" style="width: 16px; height: 16px">'
 
-    this.data = `<span>You got ${$event.gold} ${goldIcon}.</span><br/>` + this.data
-    this.html = this.sanitizer.bypassSecurityTrustHtml(this.data)
+    this.dataGeneral = `<span>You got ${$event.gold} ${goldIcon}.</span><br/>` + this.dataGeneral
+    this.htmlGeneral = this.sanitizer.bypassSecurityTrustHtml(this.dataGeneral)
+  }
+
+  addMonsterDamage($event) {
+    let icon
+    let html = ""
+
+    switch($event.type) {
+      case 'crit': 
+        let critHTML = '<span style="color: #95a5a6">Critical hit</span>'
+        icon = '<img src="assets/img/icon/sword.svg" alt="sword" style="width: 16px; height: 16px">'
+       
+        html = `<span>${critHTML} ! You dealt ${$event.damage} ${icon}.</span><br/>`
+        break;
+      case 'normal':
+        icon = '<img src="assets/img/icon/sword.svg" alt="sword" style="width: 16px; height: 16px">'
+        
+        html = `<span>You dealt ${$event.damage} ${icon}.</span><br/>`
+        break;
+      case 'auto':
+        icon = '<img src="assets/img/icon/magic.svg" alt="sword" style="width: 16px; height: 16px">'
+       
+        html = `<span>You dealt ${$event.damage} ${icon} using magic.</span><br/>`
+        break;
+    }
+
+    this.dataDamage = html + this.dataDamage
+    this.htmlDamage = this.sanitizer.bypassSecurityTrustHtml(this.dataDamage)
   }
 
   weaponBought($event) {

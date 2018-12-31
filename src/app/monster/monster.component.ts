@@ -10,6 +10,7 @@ export class MonsterComponent implements OnInit {
   @Output() zoneChange: EventEmitter<any> = new EventEmitter()
   @Output() zoneProgressUpdate: EventEmitter<any> = new EventEmitter()
   @Output() monsterDied: EventEmitter<any> = new EventEmitter()
+  @Output() monsterDamage: EventEmitter<any> = new EventEmitter()
   
   @Input() playerDamage: number 
   @Input() playerAutoDamage: number 
@@ -56,6 +57,11 @@ export class MonsterComponent implements OnInit {
 
     let damage = this.playerDamage * (isCrit ? 1.5 : 1)
 
+    if(isCrit)
+      this.monsterDamage.emit({type: 'crit', damage: damage})
+    else
+      this.monsterDamage.emit({type: 'normal', damage: damage})
+
     this.hp -= damage;
     this.hpPercent = this.hp / this.currentMonster.hpMax * 100
     if(this.hpPercent <= 0) 
@@ -69,6 +75,8 @@ export class MonsterComponent implements OnInit {
 
   autoDamage() {
     let damage = this.playerAutoDamage
+
+    this.monsterDamage.emit({type: 'auto', damage: damage})
 
     this.hp -= damage;
     this.hpPercent = this.hp / this.currentMonster.hpMax * 100
