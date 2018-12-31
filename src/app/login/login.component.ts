@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
     // On regarde si le nom existe deja en base de données
     this.httpService.getUserByName(name).subscribe(data => {
     }, error => {
-      this.httpService.createUser(name)
+      this.httpService.createUser(name).subscribe()
     })
 
     // On envoie un event avec le nom du user pour l'afficher dans le header

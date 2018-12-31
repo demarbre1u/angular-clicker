@@ -32,6 +32,10 @@ export class HttpClientService {
     return this.http.get(config.baseUrl + '/zones')
   }
 
+  getZoneById(id: number) {
+    return this.http.get(config.baseUrl + `/zones/${id}`)
+  }
+
   createUser(name: string) {
     return this.http.post(config.baseUrl + '/users', {name: name})
   }

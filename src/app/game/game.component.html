@@ -36,8 +36,20 @@
         </span>   
       </div>
 
-      <app-monster id="monster" #monster [playerDamage]="playerDamage" [playerAutoDamage]="playerAutoDamage" (zoneChange)="changeZoneBackground($event)" (monsterDied)="monsterDied($event)"></app-monster>
+      <app-monster id="monster" #monster [playerDamage]="playerDamage" [playerAutoDamage]="playerAutoDamage" (zoneProgressUpdate)="updateZoneProgress($event)" (zoneChange)="changeZoneBackground($event)" (monsterDied)="monsterDied($event)"></app-monster>
 
+      <div id="zone-progress">
+
+        <img class="icon-progress"  src="assets/img/icon/skull.svg" alt="">
+        <span>{{ zoneProgress }}</span>
+    
+        <div id="zone-progress-bar">
+            <div [style.width.%]="zoneProgressPercent" ></div>
+        </div>
+    
+        <span *ngIf="limiter !== -1">{{ limiter }}</span>
+        <img *ngIf="limiter !== -1" class="icon-progress"  src="assets/img/icon/skull.svg" alt="">
+      </div>
     </div>
 
     <div [innerHTML]="html" id="logs">

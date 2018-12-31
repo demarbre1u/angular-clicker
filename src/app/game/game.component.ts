@@ -23,6 +23,10 @@ export class GameComponent implements OnInit {
   playerAutoDamage: number = 0
   gold: number = 0
   
+  limiter: number = 0
+  zoneProgress: number = 0
+  zoneProgressPercent: number = 0 
+
   weapons = []
   
   constructor(private sanitizer: DomSanitizer, private httpService: HttpClientService, private localStorage: LocalStorageServiceService, private router: Router) {}
@@ -32,6 +36,12 @@ export class GameComponent implements OnInit {
 
     this.httpService.getWeapons().subscribe(data => {
       this.weapons = data['data'].sort( (a, b) => a.price - b.price )
+    })
+
+    this.httpService.getZoneById(1).subscribe(data => {
+      let zone = data['data']
+
+      this.limiter = zone.limiter
     })
 
     setInterval( () => {
@@ -75,5 +85,11 @@ export class GameComponent implements OnInit {
 
   changeZoneBackground(bg) {
     this.currentBg = `url('${bg.bg}')`
+  }
+
+  updateZoneProgress(data) {
+    this.zoneProgress = data.zoneProgress
+    this.zoneProgressPercent = data.zoneProgressPercent
+    this.limiter = data.limiter
   }
 }

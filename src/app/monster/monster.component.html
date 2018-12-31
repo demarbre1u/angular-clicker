@@ -4,16 +4,3 @@
 </div>
 
 <img (click)="clickedMonster()" class="monster" src="{{ currentMonster.src }}" alt="Monster">
-
-<div id="zone-progress">
-
-    <img class="icon"  src="assets/img/icon/skull.svg" alt="">
-    <span>{{ zoneProgress }}</span>
-
-    <div id="zone-progress-bar">
-        <div [style.width.%]="zoneProgressPercent" ></div>
-    </div>
-
-    <span *ngIf="currentZone.limiter !== -1">{{ currentZone.limiter }}</span>
-    <img *ngIf="currentZone.limiter !== -1" class="icon"  src="assets/img/icon/skull.svg" alt="">
-</div>

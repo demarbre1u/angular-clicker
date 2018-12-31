@@ -8,6 +8,7 @@ import { HttpClientService } from '../service/http-client.service';
 })
 export class MonsterComponent implements OnInit {
   @Output() zoneChange: EventEmitter<any> = new EventEmitter()
+  @Output() zoneProgressUpdate: EventEmitter<any> = new EventEmitter()
   @Output() monsterDied: EventEmitter<any> = new EventEmitter()
   
   @Input() playerDamage: number 
@@ -115,5 +116,7 @@ export class MonsterComponent implements OnInit {
     }
 
     this.zoneProgressPercent = this.zoneProgress / this.currentZone.limiter * 100
+
+    this.zoneProgressUpdate.emit({zoneProgress: this.zoneProgress, zoneProgressPercent: this.zoneProgressPercent, limiter: this.currentZone.limiter})
   }
 }
