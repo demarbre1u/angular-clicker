@@ -6,7 +6,7 @@ The repository contains the source code of a simple clicker game made using Angu
 
 You can find the API source code [here](https://github.com/demarbre1u/AngularClicker_API).
 
-# Content
+## Content
 
 This game contains many features such as :
 - Multiple buyable weapons & spells
