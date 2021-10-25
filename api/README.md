@@ -1,9 +1,5 @@
 # Angular Clicker API
 
-This API is based on a boilerplate you can find [here](https://github.com/raghavgarg1257/nodejs-mysql-boilerplate).
-
-It is used by my Angular Clicker project. You can find the source code of this project [here](https://github.com/demarbre1u/AngularClicker).
-
 ## Pre-requisites:
 1. NodeJS (https://nodejs.org/en/)
 2. Globally installed nodemon (https://nodemon.io/)
@@ -16,6 +12,8 @@ cd AngularClicker_API
 npm install
 ```
 To install the base data used by the Angular Clicker project, a SQL file is available in the root directory. Simply import it to your MySQL database.
+
+You can modify the SQL credentials to be used by editing the `.env` file.
 
 Now to start the server
 ```
