@@ -17,3 +17,9 @@ This game contains many features such as :
 ## How to install the project
 
 To install the project, follow the insctructions in the READMEs `api/README.md` and `app/README.md`.
+
+## Credits
+
+The SVG images used in this project are from : 
+- [FlatIcon](https://www.flaticon.com/) for monsters, icons, etc
+- [SVG Backkgrounds](https://www.svgbackgrounds.com/) for backgrounds
