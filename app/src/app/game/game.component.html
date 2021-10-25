@@ -1,0 +1,106 @@
+<div id="status-bar">
+  
+    <div id="buttons">
+        <button (click)="saveGame()">Save</button>
+        <button (click)="logOut()">Logout</button>
+    </div>
+  
+    <span id="playerName">{{ username }}</span> 
+  
+</div>  
+
+<div id="container">
+
+  <mat-tab-group animationDuration="0ms" mat-align-tabs="center" id="weapon-list">
+    <mat-tab class="tab">
+      <ng-template mat-tab-label>
+        <span class="tab-label">Weapon</span>
+      </ng-template>
+      
+      <div id="weapon-list">
+        <app-weapon-slot 
+          (weaponBought)="weaponBought($event)" 
+          *ngFor="let w of weapons" 
+          [weapon]="w" 
+          [gold]="gold" 
+          [playerDamage]="playerDamage" 
+          [playerAutoDamage]="playerAutoDamage">
+        </app-weapon-slot>
+      </div>
+
+    </mat-tab>
+  
+    <mat-tab class="tab">
+      <ng-template class="tab-label" mat-tab-label>
+        <span class="tab-label">Magic</span>
+      </ng-template>
+      
+      <div id="weapon-list">
+        <app-weapon-slot 
+          (weaponBought)="weaponBought($event)" 
+          *ngFor="let m of magics" 
+          [weapon]="m" 
+          [gold]="gold" 
+          [playerDamage]="playerDamage" 
+          [playerAutoDamage]="playerAutoDamage">
+        </app-weapon-slot>
+      </div>
+      
+    </mat-tab>
+  </mat-tab-group>
+
+ 
+
+  <div id="game-screen">
+    
+    <div *ngIf="isDataLoaded" id="screen" [ngStyle]="{'background-image':currentBg}">
+      
+      <div id="stats">
+        <span class="icon">
+          <img src="assets/img/icon/coins.svg" alt="icon">
+          <span>{{ gold }}</span>
+        </span> 
+
+        <span class="icon">
+          <img src="assets/img/icon/sword.svg" alt="icon">
+          <span>{{ playerDamage }}</span>
+        </span> 
+        
+        <span class="icon">
+          <img src="assets/img/icon/magic.svg" alt="icon">
+          <span>{{ playerAutoDamage }}</span>
+        </span>   
+      </div>
+
+      <app-monster id="monster" #monster 
+        [zoneProgress]="zoneProgress"
+        [playerDamage]="playerDamage" 
+        [playerAutoDamage]="playerAutoDamage" 
+        (zoneProgressUpdate)="updateZoneProgress($event)" 
+        (zoneChange)="changeZoneBackground($event)" 
+        (monsterDied)="monsterDied($event)"
+        (monsterDamage)="addMonsterDamage($event)">
+      </app-monster>
+
+      <div id="zone-progress">
+
+        <img class="icon-progress"  src="assets/img/icon/skull.svg" alt="">
+        <span>{{ zoneProgress }}</span>
+    
+        <div id="zone-progress-bar">
+            <div [style.width.%]="zoneProgressPercent" ></div>
+        </div>
+    
+        <span *ngIf="limiter !== -1">{{ limiter }}</span>
+        <img *ngIf="limiter !== -1" class="icon-progress"  src="assets/img/icon/skull.svg" alt="">
+      </div>
+    </div>
+
+    <div id="logs">
+      <div [innerHTML]="htmlGeneral" id="general-logs"></div>
+      <div [innerHTML]="htmlDamage" id="damage-logs"></div>
+    </div>
+
+  </div>
+
+</div>
