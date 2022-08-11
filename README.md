@@ -16,7 +16,7 @@ This game contains many features such as :
 
 ## How to install the project
 
-To install the project, follow the instructions in the READMEs of :
+To install the project, follow the instructions in the `README.md` of :
 
  - [the API](https://github.com/demarbre1u/angular-clicker/blob/main/api/README.md)
  - [the app](https://github.com/demarbre1u/angular-clicker/blob/main/app/README.md)
